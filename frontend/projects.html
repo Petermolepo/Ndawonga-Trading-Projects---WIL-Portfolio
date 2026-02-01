@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Projects — Ndawonga</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Ndawonga</div>
+    <div class="mobile-toggle" data-mobile-toggle>☰</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="team.html">Our Team</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="cta" data-toggle-theme style="margin-left:10px">Toggle Theme</button>
+  </header>
+
+  <main class="container">
+    <h1>Projects</h1>
+
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+      <select id="filterType">
+        <option value="">All types</option>
+        <option>Road Construction</option>
+        <option>Bulk Earthworks</option>
+        <option>Water & Sanitation</option>
+        <option>Waste Management</option>
+      </select>
+      <input id="searchBox" type="text" placeholder="Search by title or location">
+      <select id="sortBy">
+        <option value="">Sort by</option>
+        <option value="year-desc">Year (newest)</option>
+        <option value="year-asc">Year (oldest)</option>
+        <option value="title-asc">Title (A-Z)</option>
+      </select>
+      <button onclick="applyFilters()" class="secondary">Apply</button>
+      <button onclick="resetFilters()">Reset</button>
+      <div style="margin-left:auto"><small>Tip: Click Details to view project & Request Quote to get an automated estimate</small></div>
+    </div>
+
+    <div id="project-list" class="cards"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="cols">
+      <div style="flex:1"><h5>Ndawonga Trading & Projects</h5><div>info@ndawonga.co.za</div></div>
+      <div style="flex:1">
+        <h5>Newsletter</h5>
+        <form id="newsletterForm" class="newsletter">
+          <input name="email" type="email" placeholder="Your email" required>
+          <button>Subscribe</button>
+          <div class="note">Get updates on new tenders and projects.</div>
+        </form>
+        <div id="newsletterMsg" class="small"></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // filter helpers (+ sort)
+    function applyFilters(){
+      const type = document.getElementById('filterType').value.toLowerCase();
+      const q = document.getElementById('searchBox').value.toLowerCase();
+      const sort = document.getElementById('sortBy')?.value;
+      const list = document.getElementById('project-list');
+      const cards = Array.from(list.querySelectorAll('.card'));
+      if (sort){
+        cards.sort((a,b)=>{
+          const ay = parseInt(a.querySelector('.muted.small')?.textContent.match(/\b(\d{4})\b/)?.[1]||'0');
+          const by = parseInt(b.querySelector('.muted.small')?.textContent.match(/\b(\d{4})\b/)?.[1]||'0');
+          const at = a.querySelector('h4')?.textContent || '';
+          const bt = b.querySelector('h4')?.textContent || '';
+          if (sort==='year-desc') return (by-ay);
+          if (sort==='year-asc') return (ay-by);
+          if (sort==='title-asc') return at.localeCompare(bt);
+          return 0;
+        });
+        list.innerHTML=''; cards.forEach(c=>list.appendChild(c));
+      }
+      document.querySelectorAll('#project-list .card').forEach(card=>{
+        const t = (card.getAttribute('data-type')||'').toLowerCase();
+        const text = card.innerText.toLowerCase();
+        const okType = !type || t.includes(type);
+        const okQ = !q || text.includes(q);
+        card.style.display = (okType && okQ) ? '' : 'none';
+      });
+    }
+    function resetFilters(){ document.getElementById('filterType').value=''; document.getElementById('searchBox').value=''; const s=document.getElementById('sortBy'); if(s) s.value=''; applyFilters(); }
+  </script>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+  <script>
+    const nform = document.getElementById('newsletterForm');
+    const nmsg = document.getElementById('newsletterMsg');
+    if (nform){
+      nform.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        nmsg.textContent = 'Subscribing...';
+        const data = Object.fromEntries(new FormData(nform));
+        try{
+          const res = await fetch('/api/newsletter', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+          if(res.ok){ nmsg.style.color='green'; nmsg.textContent='Subscribed!'; nform.reset(); }
+          else { nmsg.style.color='red'; nmsg.textContent='Subscription failed'; }
+        }catch{ nmsg.style.color='red'; nmsg.textContent='Network error'; }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "name": "ndawonga-trading-projects",
+  "version": "1.0.0",
+  "description": "100% Black-Owned Civil Engineering & Waste Management Company - WIL Portfolio Project",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "civil-engineering",
+    "waste-management",
+    "construction",
+    "b-bbee",
+    "cidb",
+    "tenders",
+    "portfolio"
+  ],
+  "author": "Peter Molepo",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.6.0",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

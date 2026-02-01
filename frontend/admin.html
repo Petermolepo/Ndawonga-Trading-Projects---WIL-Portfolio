@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin - Add Project</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Ndawonga Admin</div>
+    <nav class="nav"><a href="index.html">Home</a></nav>
+  </header>
+
+  <main class="container">
+    <h1>Add Project</h1>
+    <form id="projectForm" enctype="multipart/form-data">
+      <input name="title" placeholder="Title" required>
+      <input name="year" placeholder="Year">
+      <select name="type">
+        <option value="">Select Type</option>
+        <option>Road Construction</option>
+        <option>Bulk Earthworks</option>
+        <option>Water & Sanitation</option>
+        <option>Waste Management</option>
+      </select>
+      <input name="location" placeholder="Location">
+      <input type="file" name="featured_image" accept="image/*">
+      <textarea name="description" placeholder="Description" rows="4"></textarea>
+      <button type="submit">Create Project</button>
+    </form>
+    <div id="projectMsg"></div>
+  </main>
+
+  <footer class="footer">&copy; <span id="year"></span> Ndawonga</footer>
+  <script src="assets/js/main.js"></script>
+  <link rel="stylesheet" href="assets/css/chatbot.css">
+  <script src="assets/js/chatbot.js"></script>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();
+  // submit project to backend
+  const form = document.getElementById('projectForm');
+  const msg = document.getElementById('projectMsg');
+  if (form){
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      msg.textContent = 'Saving...';
+      const fd = new FormData(form);
+      try {
+        const res = await fetch('/api/projects', { method: 'POST', body: fd });
+        if (res.ok){ msg.style.color='green'; msg.textContent='Project created successfully'; form.reset(); }
+        else { msg.style.color='red'; msg.textContent='Error creating project'; }
+      } catch(err){ msg.style.color='red'; msg.textContent='Network error'; }
+    });
+  }
+  </script>
+  
+</body>
+</html>

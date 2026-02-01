@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ndawonga Trading & Projects</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Ndawonga Trading & Projects</div>
+    <div class="mobile-toggle" data-mobile-toggle>☰</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="team.html">Our Team</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="contact.html">Contact</a>
+      <a href="admin.html" class="cta">Admin</a>
+    </nav>
+    <button class="cta" data-toggle-theme style="margin-left:10px">Toggle Theme</button>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>100% Black-Owned Civil Engineering & Waste Management Specialists</h1>
+      <p>CIDB Registered • Level 1 B-BBEE • 50% Women-Owned — delivering large-scale projects with integrity.</p>
+      <div class="quick-links">
+        <a class="btn" href="projects.html">See Projects</a>
+        <a class="btn" href="tenders.html">View Tenders</a>
+        <a class="btn" href="contact.html">Request Prof i0le</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <h2>Featured Projects</h2>
+    <div id="project-list" class="cards"></div>
+
+    <section style="margin-top:30px">
+      <h2>Why choose Ndawonga?</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
+        <div class="card"><div class="body"><h4>Trusted by Government</h4><p class="muted">CIDB grading and full compliance for tenders.</p></div></div>
+        <div class="card"><div class="body"><h4>Level 1 B-BBEE</h4><p class="muted">Empowering communities through inclusive contracting.</p></div></div>
+        <div class="card"><div class="body"><h4>Comprehensive Services</h4><p class="muted">Roads, earthworks, water & sanitation and waste management.</p></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="cols">
+      <div style="flex:1">
+        <h5>Ndawonga Trading & Projects</h5>
+        <div>100% Black Owned • Level 1 B-BBEE • CIDB Registered</div>
+        <div class="social" style="margin-top:10px">
+          <a href="#" title="LinkedIn">in</a>
+          <a href="#" title="Twitter">tw</a>
+          <a href="#" title="Facebook">fb</a>
+        </div>
+      </div>
+      <div style="flex:1">
+        <h5>Explore</h5>
+        <div><a href="services.html">Services</a></div>
+        <div><a href="projects.html">Projects</a></div>
+        <div><a href="tenders.html">Tenders</a></div>
+        <div><a href="about.html">About</a></div>
+      </div>
+      <div style="flex:1">
+        <h5>Newsletter</h5>
+        <form id="newsletterForm" class="newsletter">
+          <input name="email" type="email" placeholder="Your email" required>
+          <button>Subscribe</button>
+          <div class="note">Get updates on new tenders and projects.</div>
+        </form>
+        <div id="newsletterMsg" class="small"></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+  <script>
+    document.getElementById('year')?.textContent = new Date().getFullYear();
+    const nform = document.getElementById('newsletterForm');
+    const nmsg = document.getElementById('newsletterMsg');
+    if (nform){
+      nform.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        nmsg.textContent = 'Subscribing...';
+        const data = Object.fromEntries(new FormData(nform));
+        try{
+          const res = await fetch('/api/newsletter', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+          if(res.ok){ nmsg.style.color='green'; nmsg.textContent='Subscribed!'; nform.reset(); }
+          else { nmsg.style.color='red'; nmsg.textContent='Subscription failed'; }
+        }catch{ nmsg.style.color='red'; nmsg.textContent='Network error'; }
+      });
+    }
+  </script>
+</body>
+</html>

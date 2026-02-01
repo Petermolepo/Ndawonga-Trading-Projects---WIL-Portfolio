@@ -1,0 +1,11 @@
+#chatbot-toggle{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:26px;z-index:1200;box-shadow:0 8px 24px rgba(2,6,23,0.2)}
+#chatbot-window{position:fixed;bottom:90px;right:20px;width:330px;height:430px;background:#fff;border-radius:10px;display:none;flex-direction:column;z-index:1200;overflow:hidden;box-shadow:0 10px 30px rgba(2,6,23,0.25)}
+#chatbot-window.open{display:flex}
+#chatbot-header{background:var(--deep);color:#fff;padding:12px;font-weight:700;text-align:center}
+#chatbot-messages{flex:1;padding:12px;overflow:auto;background:#f8fafc}
+.chat-msg{margin:8px 0;padding:8px 10px;border-radius:8px;max-width:80%}
+.chat-msg.user{background:var(--accent);color:#fff;margin-left:auto}
+.chat-msg.bot{background:#eef2f6;color:#0b1220;margin-right:auto}
+#chatbot-input{display:flex;border-top:1px solid #e6eef9}
+#chatbot-input input{flex:1;padding:10px;border:none;outline:none}
+#chatbot-input button{background:var(--deep);color:#fff;padding:10px;border:none;cursor:pointer}

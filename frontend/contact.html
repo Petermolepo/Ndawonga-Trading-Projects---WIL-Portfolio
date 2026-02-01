@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Contact — Ndawonga</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
+</head>
+<body>
+  <header class="header"><div class="logo">Ndawonga</div><div class="mobile-toggle" data-mobile-toggle>☰</div><nav class="nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="team.html">Our Team</a><a href="services.html">Services</a><a href="about.html">About</a><a href="tenders.html">Tenders</a><a href="contact.html">Contact</a></nav><button class="cta" data-toggle-theme style="margin-left:10px">Toggle Theme</button></header>
+
+  <main class="container">
+    <h1>Contact Us</h1>
+    <p>Send a message or request documents and tender packs.</p>
+
+    <form id="contactForm" class="form-row" style="max-width:720px">
+      <input name="name" placeholder="Full name" required>
+      <input name="email" placeholder="Email" type="email" required>
+      <input name="phone" placeholder="Phone (optional)">
+      <select name="category">
+        <option>General Inquiry</option>
+        <option>Tender Application</option>
+        <option>Request Company Profile</option>
+        <option>Career Opportunity</option>
+      </select>
+      <input name="subject" placeholder="Subject">
+      <textarea name="message" placeholder="Message" rows="6" required></textarea>
+      <div style="text-align:right"><button type="submit">Send Message</button></div>
+    </form>
+
+    <div id="contactMsg" style="margin-top:12px"></div>
+  </main>
+
+  <footer class="footer">&copy; <span id="year"></span> Ndawonga</footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // contact form handler uses main.js (loadProjects etc)
+    // Add local handler to display response:
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm){
+      contactForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(contactForm));
+        const res = await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+        const out = document.getElementById('contactMsg');
+        if (res.ok){ out.innerHTML = '<div style="color:green">Message sent. We will be in touch.</div>'; contactForm.reset(); }
+        else out.innerHTML = '<div style="color:red">Error sending message</div>';
+      });
+    }
+  </script>
+</body>
+</html>
